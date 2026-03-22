@@ -102,10 +102,13 @@
   </button>
   <h1 class="text-2xl font-['Noto_Serif'] italic font-light tracking-tight text-[#7b5556] dark:text-[#f2f4f4]">Princess Shop</h1>
   <div class="relative flex items-center gap-2">
+  <button onclick="loginAdmin()" class="text-[#7b5556] dark:text-[#f2f4f4] hover:opacity-80 transition-opacity text-sm font-medium">
+  Admin
+  </button>
   <button class="text-[#7b5556] dark:text-[#f2f4f4] hover:opacity-80 transition-opacity">
   <span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
   </button>
-  <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-on-primary font-bold">2</span>
+  <span class="cart-count absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-on-primary font-bold">0</span>
   </div>
   </div>
 </header>
@@ -126,10 +129,10 @@
 <!-- Product Grid -->
 <div class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
   <!-- Card 1 -->
-  <article class="product-card group relative flex flex-col" data-category="Rostro">
+  <article class="product-card group relative flex flex-col" data-category="Rostro" data-id="1">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Soft pink blush powder in a luxury compact case" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqfpkn1Ny0ihm7aJLP10Vd6fcXeyaqdySDsk-Jh2P2Nsg4O2QNmlete4fpBFNWYBbZA51H3Xw1ruyRYKS-_MCY7JjVdioSUyNM8gDhrYYN8VE5SVPKFpiKrPTx8Zuzjw0ERALl_V4IXYsNDEFqu1lfKeoD6b4Lzxac17Oio76cXxN1_kSby8erdSAA4QTx4Ywxb3zSQsiqZrns3ww5JdSoRDniILS4MNDuoBEWf01AuatbVqTtXvPiCROc0lLY2ncOA5cDU5OfExmf"/>
-  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(1)">
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(parseInt(this.closest('.product-card').dataset.id))">
   <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
   </button>
   </div>
@@ -140,10 +143,10 @@
   </div>
   </article>
   <!-- Card 2 -->
-  <article class="product-card group relative flex flex-col mt-8 lg:mt-0" data-category="Labios">
+  <article class="product-card group relative flex flex-col mt-8 lg:mt-0" data-category="Labios" data-id="2">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Matte liquid lipstick in deep plum shade" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAit0hWnNd6iiLvFacjVOr5kicIqN0oHw24c49mgdbmx4QnhHkJgW9nAzV6WuRgv5A5HyuixiP7Luzv2mCe4R-cUI7bG3b0r2d9hsbO0BJrClbBCvWvIQ1Y1OZPou6rNbARd6sTx5JGP4Mi92H4acFp4MOFObX-TZsvpnrMB4SwHK4uADyrBT38WC7CRt5Q3uZUryrr71w4wlm7k1tr-76ydhoLtXIuxgg9fsKQRAFBLieHS6abS_Mk2lsT9BR1riJ2u_8nZwPQmKlY"/>
-  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(2)">
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(parseInt(this.closest('.product-card').dataset.id))">
   <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
   </button>
   </div>
@@ -154,10 +157,10 @@
   </div>
   </article>
   <!-- Card 3 -->
-  <article class="product-card group relative flex flex-col" data-category="Rostro">
+  <article class="product-card group relative flex flex-col" data-category="Rostro" data-id="3">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Highlighter drops in golden champagne tone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAug1quozrijFs0VRkVtiGysLZxraaOl0uDJBlCqtOvwIRpgmoBa7yJRx2R3OX5PUNem59kVBHA5IsbleinRtwBf4QMgfuqjSzBB39G5MkqEf5zh1FjpiM85otwUG8f1LLEUpj3MduXu94t30_E3O4bxgl-9Q7twp2u44sJhlRRXnDP2jqyrv-ccPVtE0tUAZcLbNrz2wlPxHnlpC71OL5KOsUsrTiajqBChNdbyqU1yMGAthVvDyiiPbzC1x08fKunLWF73XgfDrtv"/>
-  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(3)">
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(parseInt(this.closest('.product-card').dataset.id))">
   <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
   </button>
   </div>
@@ -168,10 +171,10 @@
   </div>
   </article>
   <!-- Card 4 -->
-  <article class="product-card group relative flex flex-col mt-8 lg:mt-0" data-category="Accesorios">
+  <article class="product-card group relative flex flex-col mt-8 lg:mt-0" data-category="Accesorios" data-id="4">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Set of professional gold makeup brushes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo2oIiHrvq_40MhhEHS6BHw9VJnmRgSA29mLT2uO3XpmIbdWQVifhGbx8YQuWzcWSnslgdZBCmNl5GkZtCeDEXkzFwCBvBzYJ9RxhgavKMFl0nB1EaKS_4I0MEwJy8wFgPlI9F3HH6dno0Xb3-M5XAgTP4Rcpt0QnvPCj777QnKOhk4zk9HepsqQ7p78JSZ43FCh1furaP0tsYnPX8P5gj936o0D-u6Erk3qnjdf5lr6XRCkKlx--c3Y5kt1TL9yhj5dSzKxscAC9l"/>
-  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(4)">
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(parseInt(this.closest('.product-card').dataset.id))">
   <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
   </button>
   </div>
@@ -182,10 +185,10 @@
   </div>
   </article>
   <!-- Card 5 -->
-  <article class="product-card group relative flex flex-col" data-category="Accesorios">
+  <article class="product-card group relative flex flex-col" data-category="Accesorios" data-id="5">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Glass bottle of floral perfume" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCYV-Q3blnjQP2HvoL0Fw-NMA3NQNFpWcVogdgUijLMYgt_mwEQQ-Yb4y0cUp8iUslLrUZJw5bV_Vval5_v4qY1kq31ST3xu5mxgMdJZ2w8kirCh_65b-YR10QqGcxeGZD2uUbi-CZvayFVILOZ4X2qsL3GxU9vXy-eoyXzbWGpbf-thcCj80z2c21Z5J_InmMIqI9AjGd2cCyaE0zJCj_EusuP8tIT8g8SQga-Pbdw8dRc6oOp0_mieCVlQwe8H7amr3gFoVmho7D"/>
-  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(5)">
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95" onclick="addToCart(parseInt(this.closest('.product-card').dataset.id))">
   <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
   </button>
   </div>
@@ -196,7 +199,7 @@
   </div>
   </article>
   <!-- Card 6 -->
-  <article class="group relative flex flex-col mt-8 lg:mt-0">
+  <article class="product-card group relative flex flex-col mt-8 lg:mt-0" data-category="Rostro" data-id="6">
   <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
   <img class="h-full w-full object-cover" data-alt="Nourishing face oil in amber dropper bottle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwNKXH2Ci1MtuuJhm0MNKHFHJsolE6qfkpPdKj6I2lNprSq7E8sGWBAD0Qxj3nBdhtgdjnBgl1ctG2iSZvXXQny6nQNs7sVwyIKcoBmSDJOL-dpY66JAXb-YSs5Fx8ifwIy9ekcsvBGxPJFMoVW8SIXqIETRMBo-qw_dW26dgFaBdZSfy6xfxkBl__kv_5ufSq5_m3VSdRF-Xf0732x2Ym258x9w_i3hXH6mRyEJBh2XZ_yq4vaVl7kR0Nr3vn7zx_wMB8bjwxb9oR"/>
   <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
@@ -254,6 +257,14 @@
   <span class="font-['Manrope'] text-[0.6875rem] uppercase tracking-[0.05em] mt-1">Me</span>
   </a>
 </nav>
+<!-- Admin Panel -->
+<div id="admin-panel" class="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg border-t hidden">
+  <div class="flex gap-2 overflow-x-auto">
+    <button onclick="addProduct()" class="bg-primary text-on-primary px-4 py-2 rounded">Agregar Producto</button>
+    <button onclick="addCombo()" class="bg-secondary text-on-secondary px-4 py-2 rounded">Agregar Combo</button>
+    <button onclick="logoutAdmin()" class="bg-red-500 text-white px-4 py-2 rounded">Cerrar Sesión</button>
+  </div>
+</div>
 <script src="app.js"></script>
 </body>
 </html>

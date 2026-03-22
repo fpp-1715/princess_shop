@@ -1,0 +1,258 @@
+<!-- Princess Shop - Shop (Catalog) -->
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shop - Princess Shop</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,300;0,400;0,700;1,300&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "surface-container": "#eceeef",
+                "surface-container-high": "#e6e9e9",
+                "on-tertiary-fixed": "#504644",
+                "tertiary-container": "#feedeb",
+                "inverse-on-surface": "#9c9d9d",
+                "on-secondary-container": "#5a504b",
+                "tertiary-dim": "#5c514f",
+                "secondary-dim": "#5b514d",
+                "inverse-surface": "#0c0f0f",
+                "surface-bright": "#f9f9f9",
+                "on-surface": "#2f3334",
+                "surface": "#f9f9f9",
+                "surface-container-lowest": "#ffffff",
+                "tertiary-fixed": "#feedeb",
+                "on-primary-fixed": "#4b2b2c",
+                "outline-variant": "#afb3b3",
+                "on-error-container": "#6e1400",
+                "on-secondary-fixed-variant": "#645955",
+                "surface-container-highest": "#dfe3e4",
+                "inverse-primary": "#f7c5c5",
+                "background": "#f9f9f9",
+                "tertiary": "#685c5b",
+                "surface-dim": "#d7dbdb",
+                "on-secondary-fixed": "#463d39",
+                "on-tertiary": "#fff7f6",
+                "secondary-fixed-dim": "#e0d1cc",
+                "primary-fixed-dim": "#e9b8b8",
+                "surface-container-low": "#f2f4f4",
+                "on-surface-variant": "#5b6061",
+                "error-dim": "#791903",
+                "error-container": "#fd795a",
+                "secondary": "#675d58",
+                "on-error": "#fff7f6",
+                "primary-dim": "#6e494a",
+                "primary": "#7b5556",
+                "surface-variant": "#dfe3e4",
+                "error": "#a73b21",
+                "on-background": "#2f3334",
+                "tertiary-fixed-dim": "#efdfdd",
+                "on-primary": "#fff7f6",
+                "on-tertiary-fixed-variant": "#6e6260",
+                "secondary-fixed": "#eedfda",
+                "secondary-container": "#eedfda",
+                "surface-tint": "#7b5556",
+                "on-tertiary-container": "#635756",
+                "on-secondary": "#fff7f5",
+                "primary-container": "#f7c5c5",
+                "outline": "#777b7c",
+                "on-primary-fixed-variant": "#6b4747",
+                "primary-fixed": "#f7c5c5",
+                "on-primary-container": "#613e3f"
+              },
+              fontFamily: {
+                "headline": ["Noto Serif"],
+                "body": ["Manrope"],
+                "label": ["Manrope"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+            },
+          },
+        }
+      </script>
+  <style>
+          .material-symbols-outlined {
+              font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+          }
+          .editorial-shadow {
+              box-shadow: 0 20px 40px rgba(123, 85, 86, 0.06);
+          }
+          ::-webkit-scrollbar {
+              display: none;
+          }
+      </style>
+  <style>
+      body {
+        min-height: max(884px, 100dvh);
+      }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#f9f9f9]/80 dark:bg-[#2f3334]/80 backdrop-blur-lg shadow-[0_20px_40px_rgba(123,85,86,0.06)]">
+  <div class="flex justify-between items-center px-6 py-4 w-full">
+  <button class="text-[#7b5556] dark:text-[#f2f4f4] hover:opacity-80 transition-opacity">
+  <span class="material-symbols-outlined" data-icon="menu">menu</span>
+  </button>
+  <h1 class="text-2xl font-['Noto_Serif'] italic font-light tracking-tight text-[#7b5556] dark:text-[#f2f4f4]">Princess Shop</h1>
+  <div class="relative flex items-center gap-2">
+  <button class="text-[#7b5556] dark:text-[#f2f4f4] hover:opacity-80 transition-opacity">
+  <span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+  </button>
+  <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-on-primary font-bold">2</span>
+  </div>
+  </div>
+</header>
+<main class="pt-24 pb-32 px-6">
+<!-- Hero Header -->
+<section class="mb-10 text-center">
+  <h2 class="font-headline text-4xl lg:text-5xl text-primary font-light mb-2">Nuestra Colección</h2>
+  <p class="font-body text-on-surface-variant text-sm tracking-wide">EL RITUAL DE LA BELLEZA ETÉREA</p>
+</section>
+<!-- Category Filter Bar -->
+<nav class="flex gap-4 overflow-x-auto pb-8 no-scrollbar scroll-smooth items-center">
+  <button class="flex-none px-6 py-2.5 rounded-full bg-primary text-on-primary font-label text-sm font-medium shadow-sm">Todos</button>
+  <button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-label text-sm hover:bg-surface-container-highest transition-colors">Rostro</button>
+  <button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-label text-sm hover:bg-surface-container-highest transition-colors">Labios</button>
+  <button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-label text-sm hover:bg-surface-container-highest transition-colors">Ojos</button>
+  <button class="flex-none px-6 py-2.5 rounded-full bg-surface-container-low text-on-surface-variant font-label text-sm hover:bg-surface-container-highest transition-colors">Accesorios</button>
+</nav>
+<!-- Product Grid -->
+<div class="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-3 xl:grid-cols-4">
+  <!-- Card 1 -->
+  <article class="group relative flex flex-col">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Soft pink blush powder in a luxury compact case" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqfpkn1Ny0ihm7aJLP10Vd6fcXeyaqdySDsk-Jh2P2Nsg4O2QNmlete4fpBFNWYBbZA51H3Xw1ruyRYKS-_MCY7JjVdioSUyNM8gDhrYYN8VE5SVPKFpiKrPTx8Zuzjw0ERALl_V4IXYsNDEFqu1lfKeoD6b4Lzxac17Oio76cXxN1_kSby8erdSAA4QTx4Ywxb3zSQsiqZrns3ww5JdSoRDniILS4MNDuoBEWf01AuatbVqTtXvPiCROc0lLY2ncOA5cDU5OfExmf"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Velvet Rose Blush</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Pigmento sedoso natural</p>
+  <span class="font-body font-bold text-primary">$34.00</span>
+  </div>
+  </article>
+  <!-- Card 2 -->
+  <article class="group relative flex flex-col mt-8 lg:mt-0">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Matte liquid lipstick in deep plum shade" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAit0hWnNd6iiLvFacjVOr5kicIqN0oHw24c49mgdbmx4QnhHkJgW9nAzV6WuRgv5A5HyuixiP7Luzv2mCe4R-cUI7bG3b0r2d9hsbO0BJrClbBCvWvIQ1Y1OZPou6rNbARd6sTx5JGP4Mi92H4acFp4MOFObX-TZsvpnrMB4SwHK4uADyrBT38WC7CRt5Q3uZUryrr71w4wlm7k1tr-76ydhoLtXIuxgg9fsKQRAFBLieHS6abS_Mk2lsT9BR1riJ2u_8nZwPQmKlY"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Silk Matte Lip</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Acabado hidratante 12h</p>
+  <span class="font-body font-bold text-primary">$28.00</span>
+  </div>
+  </article>
+  <!-- Card 3 -->
+  <article class="group relative flex flex-col">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Highlighter drops in golden champagne tone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAug1quozrijFs0VRkVtiGysLZxraaOl0uDJBlCqtOvwIRpgmoBa7yJRx2R3OX5PUNem59kVBHA5IsbleinRtwBf4QMgfuqjSzBB39G5MkqEf5zh1FjpiM85otwUG8f1LLEUpj3MduXu94t30_E3O4bxgl-9Q7twp2u44sJhlRRXnDP2jqyrv-ccPVtE0tUAZcLbNrz2wlPxHnlpC71OL5KOsUsrTiajqBChNdbyqU1yMGAthVvDyiiPbzC1x08fKunLWF73XgfDrtv"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Glow Drops</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Luminosidad interna</p>
+  <span class="font-body font-bold text-primary">$42.00</span>
+  </div>
+  </article>
+  <!-- Card 4 -->
+  <article class="group relative flex flex-col mt-8 lg:mt-0">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Set of professional gold makeup brushes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo2oIiHrvq_40MhhEHS6BHw9VJnmRgSA29mLT2uO3XpmIbdWQVifhGbx8YQuWzcWSnslgdZBCmNl5GkZtCeDEXkzFwCBvBzYJ9RxhgavKMFl0nB1EaKS_4I0MEwJy8wFgPlI9F3HH6dno0Xb3-M5XAgTP4Rcpt0QnvPCj777QnKOhk4zk9HepsqQ7p78JSZ43FCh1furaP0tsYnPX8P5gj936o0D-u6Erk3qnjdf5lr6XRCkKlx--c3Y5kt1TL9yhj5dSzKxscAC9l"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Duo Contour Kit</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Esculpe con delicadeza</p>
+  <span class="font-body font-bold text-primary">$45.00</span>
+  </div>
+  </article>
+  <!-- Card 5 -->
+  <article class="group relative flex flex-col">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Glass bottle of floral perfume" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCYV-Q3blnjQP2HvoL0Fw-NMA3NQNFpWcVogdgUijLMYgt_mwEQQ-Yb4y0cUp8iUslLrUZJw5bV_Vval5_v4qY1kq31ST3xu5mxgMdJZ2w8kirCh_65b-YR10QqGcxeGZD2uUbi-CZvayFVILOZ4X2qsL3GxU9vXy-eoyXzbWGpbf-thcCj80z2c21Z5J_InmMIqI9AjGd2cCyaE0zJCj_EusuP8tIT8g8SQga-Pbdw8dRc6oOp0_mieCVlQwe8H7amr3gFoVmho7D"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Essence No. 7</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Perfume artesanal floral</p>
+  <span class="font-body font-bold text-primary">$85.00</span>
+  </div>
+  </article>
+  <!-- Card 6 -->
+  <article class="group relative flex flex-col mt-8 lg:mt-0">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Nourishing face oil in amber dropper bottle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwNKXH2Ci1MtuuJhm0MNKHFHJsolE6qfkpPdKj6I2lNprSq7E8sGWBAD0Qxj3nBdhtgdjnBgl1ctG2iSZvXXQny6nQNs7sVwyIKcoBmSDJOL-dpY66JAXb-YSs5Fx8ifwIy9ekcsvBGxPJFMoVW8SIXqIETRMBo-qw_dW26dgFaBdZSfy6xfxkBl__kv_5ufSq5_m3VSdRF-Xf0732x2Ym258x9w_i3hXH6mRyEJBh2XZ_yq4vaVl7kR0Nr3vn7zx_wMB8bjwxb9oR"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Botanical Elixir</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Aceite facial revitalizante</p>
+  <span class="font-body font-bold text-primary">$56.00</span>
+  </div>
+  </article>
+  <!-- Card 7 -->
+  <article class="group relative flex flex-col">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Eye shadow palette with warm nude tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2OpfPvr-zqf41jfr0eFUk9kV0dkMphWVys5B5ckK8PeQO1_E2fmYJUgdWzfVz1Rye6bggnwNsQ9uUCuNgHDtXurABhcMaiQpieal1c3yogPZcbeUbZvQT82a0G0ryDJniCwp960zE3drPRFPe15qFI6rX7jSFvs9tXSZK8tAiASqrIBtl4BPEKvsf1Z_UTYKK9o7FJntJpjAdTSuIJbU5Dhro2C1MKYddRRaF-0-vAlw0wMxrHeL1AGqrQeApXhJ-TauWEK9Yi2B9"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Nude Dreams</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Paleta de 12 tonos cálidos</p>
+  <span class="font-body font-bold text-primary">$48.00</span>
+  </div>
+  </article>
+  <!-- Card 8 -->
+  <article class="group relative flex flex-col mt-8 lg:mt-0">
+  <div class="aspect-[4/5] w-full overflow-hidden rounded-xl bg-surface-container-low mb-4 transition-transform group-hover:-translate-y-1">
+  <img class="h-full w-full object-cover" data-alt="Premium glass moisturizer jar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPkQGNFVxlZS5KIFuklhHrxNpHYzDsLmqG7sLW7ZVPs0QfCj5z7EQvROuUC5DdIPgDahD2x86ZQX1ATAjZmOQ3sNkmOZfC8427rJUhkuMnIJ8utpFzImSswIG_zYKGC4SJzcpGM1fnbS3b8a8m0fL2f9bT7kPgefSSKn4rzvnHTpBMsTTvA5P0-N3mvbmgJAvDEqXMzbsf9ZT9IbAwEQuUhmUXikjUFr1Oe37mqFVy3Tgq0dvlVz8Jm2HICTtMeo6HxQjnXu7spWXX"/>
+  <button class="absolute bottom-6 right-2 bg-surface-container-lowest/90 backdrop-blur text-primary p-3 rounded-full editorial-shadow opacity-0 group-hover:opacity-100 transition-opacity active:scale-95">
+  <span class="material-symbols-outlined text-[20px]" data-icon="add_shopping_cart">add_shopping_cart</span>
+  </button>
+  </div>
+  <div class="px-1">
+  <h3 class="font-headline text-lg text-on-surface leading-tight mb-1">Cloud Cream</h3>
+  <p class="font-body text-sm text-on-surface-variant mb-2">Hidratación ligera 24h</p>
+  <span class="font-body font-bold text-primary">$39.00</span>
+  </div>
+  </article>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#ffffff]/90 dark:bg-[#2f3334]/90 backdrop-blur-xl rounded-t-[2rem] z-50 shadow-[0_-10px_30px_rgba(123,85,86,0.04)]">
+  <a class="flex flex-col items-center justify-center text-[#7b5556]/50 dark:text-[#f2f4f4]/40 px-6 py-2 hover:text-[#7b5556] dark:hover:text-[#f2f4f4] transition-colors" href="index.html">
+  <span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+  <span class="font-['Manrope'] text-[0.6875rem] uppercase tracking-[0.05em] mt-1">Glow</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-[#7b5556] dark:text-[#f2f4f4] font-bold bg-[#f2f4f4] dark:bg-[#7b5556]/20 rounded-full px-6 py-2 transform scale-90 duration-300" href="shop.html">
+  <span class="material-symbols-outlined" data-icon="local_mall" style="font-variation-settings: 'FILL' 1;">local_mall</span>
+  <span class="font-['Manrope'] text-[0.6875rem] uppercase tracking-[0.05em] mt-1">Shop</span>
+  </a>
+  <a class="flex flex-col items-center justify-center text-[#7b5556]/50 dark:text-[#f2f4f4]/40 px-6 py-2 hover:text-[#7b5556] dark:hover:text-[#f2f4f4] transition-colors" href="contact.html">
+  <span class="material-symbols-outlined" data-icon="person">person</span>
+  <span class="font-['Manrope'] text-[0.6875rem] uppercase tracking-[0.05em] mt-1">Me</span>
+  </a>
+</nav>
+</body>
+</html>

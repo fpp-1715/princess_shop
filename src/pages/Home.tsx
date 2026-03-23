@@ -31,7 +31,7 @@ function HeroSection() {
             Tu piel merece<br /><span className="italic text-rose-500">lo mejor</span><br />del mundo
           </h1>
           <p className="reveal-hidden text-base sm:text-lg text-gray-700 leading-relaxed max-w-lg" style={{ transitionDelay: '200ms' }}>
-            Creemos que la belleza no tiene reglas. Por eso seleccionamos los mejores productos de maquillaje y skincare para que brilles con tu propia esencia. Calidad, tendencia y amor por lo que hacemos… todo en un solo lugar.
+            Sin filtros, sin reglas, sin miedo. Celebramos la belleza real: la que se divierte, experimenta, se equivoca y aprende. Nuestra filosofía es simple: amamos lo que hacemos y queremos que tú también ames lo que usas. Porque maquillaje y skincare no son rutinas… son momentos para ti.
           </p>
           <div className="reveal-hidden flex flex-wrap gap-4" style={{ transitionDelay: '400ms' }}>
             <Link to="/shop" className="btn-primary px-8 py-4 rounded-full text-sm font-bold inline-flex items-center gap-2.5 shadow-rose-md hover:scale-105 transition-transform">

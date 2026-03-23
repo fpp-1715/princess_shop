@@ -19,7 +19,7 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
 
   const handleCheckout = () => {
     // Generar mensaje para WhatsApp
-    const phoneNumber = "5355555555"; // Reemplaza con el número de teléfono real
+    const phoneNumber = "5356968120"; // Reemplaza con el número de teléfono real
     let message = "¡Hola! ✨ Estoy interesad@ en realizar la siguiente compra:\n\n";
     
     items.forEach(item => {

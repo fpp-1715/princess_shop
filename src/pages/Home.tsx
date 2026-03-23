@@ -129,11 +129,6 @@ function FeaturedProductsSection() {
                 </div>
                 <div className="p-5">
                   <h2 className="font-display text-base font-semibold text-gray-900 mb-1.5 leading-snug line-clamp-1 hover:text-primary transition-colors">{product.name}</h2>
-                  {product.description && (
-                    <p className="text-xs text-gray-500 mt-1 mb-2">
-                      {product.description}
-                    </p>
-                  )}
                   <div className="flex items-center justify-between mt-5">
                     <div className="flex flex-col">
                       {product.discount_price ? (

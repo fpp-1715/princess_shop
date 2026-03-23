@@ -139,11 +139,6 @@ export default function Shop() {
                       <span className="px-2.5 py-0.5 rounded-full badge-rose text-[10px] font-semibold">{product.category_name}</span>
                     </div>
                     <h2 className="font-display text-base font-semibold text-foreground mb-1.5 leading-snug">{product.name}</h2>
-                    {product.description && (
-                      <p className="text-xs text-gray-500 mt-1 mb-2">
-                        {product.description}
-                      </p>
-                    )}
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex flex-col">
                         {product.discount_price ? (

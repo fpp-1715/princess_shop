@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import Icon from '../../components/ui/AppIcon';
 import imageCompression from 'browser-image-compression';
+import ImageCropper from '../../components/ImageCropper';
+import { getCroppedImg } from '../../utils/cropImage';
+import type { Crop, PixelCrop } from 'react-image-crop';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<'products' | 'combos'>('products');
@@ -18,6 +21,12 @@ export default function AdminDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+  
+  // Cropper State
+  const [imgSrc, setImgSrc] = useState('');
+  const imgRef = useRef<HTMLImageElement>(null);
+  const [crop, setCrop] = useState<Crop>({ unit: '%', width: 90, height: 90, x: 5, y: 5 });
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   
   const initialProductForm = {
     name: '', description: '', price: 0, image_url: '', category_id: '', 
@@ -91,25 +100,36 @@ export default function AdminDashboard() {
         setFormData({ ...initialComboForm });
       }
     }
+    setImgSrc('');
+    setCompletedCrop(null);
     setIsModalOpen(true);
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setImgSrc('');
+      setCompletedCrop(null);
+      const reader = new FileReader();
+      reader.addEventListener('load', () => setImgSrc(reader.result?.toString() || ''));
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
 
+  const handleUploadCroppedImage = async () => {
+    if (!completedCrop || !imgRef.current) return;
+    
     setUploadingImage(true);
-
     try {
-      // Comprimir la imagen antes de subir
-      const compressedFile = await imageCompression(file, {
-        maxSizeMB: 1, // Máximo 1MB
-        maxWidthOrHeight: 1920, // Máximo 1920px de ancho o alto
+      const croppedFile = await getCroppedImg(imgRef.current, completedCrop);
+      
+      const compressedFile = await imageCompression(croppedFile, {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1920,
         useWebWorker: true,
-        fileType: 'image/webp' // Convertir a WebP para mejor compresión
+        fileType: 'image/webp'
       });
 
-      const fileExt = 'webp'; // Forzar WebP
+      const fileExt = 'webp';
       const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
       const filePath = `product-images/${fileName}`;
 
@@ -122,9 +142,10 @@ export default function AdminDashboard() {
       } else {
         const { data } = supabase.storage.from('products').getPublicUrl(filePath);
         setFormData((prev: any) => ({ ...prev, image_url: data.publicUrl }));
+        setImgSrc(''); // Limpiar el estado de recorte después de subir
       }
-    } catch (error) {
-      alert('Error comprimiendo imagen: ' + (error as Error).message);
+    } catch (e) {
+      alert('Error procesando la imagen: ' + (e as Error).message);
     } finally {
       setUploadingImage(false);
     }
@@ -397,19 +418,51 @@ export default function AdminDashboard() {
                 {/* Upload Img Component */}
                 <div className="col-span-2 mt-2">
                   <label className="block text-sm mb-1 font-medium">Imagen del {activeTab === 'products' ? 'Producto' : 'Combo'} (Desde Galería)</label>
-                  <div className="flex items-center gap-4">
-                    {formData.image_url && (
-                      <img src={formData.image_url} alt="Preview" className="w-[60px] h-[60px] rounded-xl object-contain bg-white border border-gray-200 flex-shrink-0" />
-                    )}
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleImageUpload} 
-                      disabled={uploadingImage}
-                      className="form-input flex-1 p-2 rounded-xl text-sm border-gray-200 bg-gray-50" 
-                    />
-                  </div>
-                  {uploadingImage && <span className="text-xs font-semibold text-primary mt-1 block">Subiendo imagen, espera un momento...</span>}
+                  
+                  {imgSrc ? (
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50 flex flex-col items-center gap-4">
+                      <p className="text-sm font-semibold text-gray-700">Ajusta el recorte de la imagen</p>
+                      <ImageCropper 
+                        imageSrc={imgSrc} 
+                        crop={crop} 
+                        setCrop={setCrop} 
+                        onCropComplete={(c) => setCompletedCrop(c)} 
+                        imgRef={imgRef}
+                      />
+                      <div className="flex gap-2 w-full justify-center mt-2">
+                        <button 
+                          type="button" 
+                          onClick={() => setImgSrc('')} 
+                          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300"
+                        >
+                          Cancelar Recorte
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={handleUploadCroppedImage} 
+                          disabled={!completedCrop || uploadingImage}
+                          className="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary-dark disabled:opacity-50"
+                        >
+                          {uploadingImage ? 'Subiendo...' : 'Aplicar Recorte y Subir'}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-4">
+                      {formData.image_url && (
+                        <img src={formData.image_url} alt="Preview" className="w-[60px] h-[60px] rounded-xl object-contain bg-white border border-gray-200 flex-shrink-0" />
+                      )}
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={onSelectFile} 
+                        disabled={uploadingImage}
+                        className="form-input flex-1 p-2 rounded-xl text-sm border-gray-200 bg-gray-50" 
+                      />
+                    </div>
+                  )}
+
+                  {uploadingImage && !imgSrc && <span className="text-xs font-semibold text-primary mt-1 block">Subiendo imagen, espera un momento...</span>}
                 </div>
 
                 <div className="col-span-2 flex items-center mt-2">

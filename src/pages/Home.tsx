@@ -309,7 +309,7 @@ function CtaSection() {
         
         <div className="relative z-10 space-y-8">
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 drop-shadow-sm">
-            ¿Lista para revelar tu <span className="italic text-rose-600">mejor piel</span>?
+            ¿Lista para revelar tu <span className="italic text-rose-600">mejor versión</span>?
           </h2>
           <p className="text-gray-800 font-medium text-lg sm:text-xl max-w-xl mx-auto text-balance drop-shadow-sm">
             Únete a cientos de mujeres que ya han transformado su rutina de belleza con nuestros productos.

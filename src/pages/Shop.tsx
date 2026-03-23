@@ -98,7 +98,7 @@ export default function Shop() {
           </h1>
         </div>
       </section>
-      <section className="sticky top-16 md:top-20 z-30 bg-white/80 backdrop-blur-md border-b border-primary/8 px-4 sm:px-6 py-4 shadow-sm">
+      <section className="bg-white/80 backdrop-blur-md border-b border-primary/8 px-4 sm:px-6 py-4 shadow-sm">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="flex flex-wrap justify-center md:justify-start gap-2 w-full md:w-auto">
             {categories.map((cat) => (

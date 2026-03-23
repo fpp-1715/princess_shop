@@ -1,4 +1,3 @@
-import React from 'react';
 import AppIcon from './AppIcon';
 
 export default function AppLogo({ size = 64, className = "" }: any) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import AppLogo from './ui/AppLogo';
 import Icon from './ui/AppIcon';

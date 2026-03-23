@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function AppImage({ src, alt, className = "", fill, sizes, priority, style, width, height, ...props }: any) {
   const [error, setError] = useState(false);

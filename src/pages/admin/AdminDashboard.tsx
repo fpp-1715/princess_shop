@@ -161,13 +161,37 @@ export default function AdminDashboard() {
 
     try {
       console.log('Payload to save:', payload); // Debug log
+      
+      let oldImageUrl: string | null = null;
+      
       if (editingId) {
+        const itemsList = activeTab === 'products' ? products : combos;
+        const oldItem = itemsList.find((i: any) => i.id === editingId);
+        if (oldItem && oldItem.image_url && oldItem.image_url !== payload.image_url) {
+          // The image was changed, schedule the old one for deletion
+          oldImageUrl = oldItem.image_url;
+        }
+
         const { error } = await supabase.from(table).update(payload).eq('id', editingId);
         if (error) throw error;
       } else {
         const { error } = await supabase.from(table).insert([payload]);
         if (error) throw error;
       }
+
+      // Si se subió una foto nueva y reemplazó la vieja, la limpiamos del storage
+      if (oldImageUrl) {
+        try {
+          const path = oldImageUrl.split('/product-images/')[1];
+          if (path) {
+            await supabase.storage.from('products').remove([`product-images/${path}`]);
+            console.log('Foto anterior eliminada correctamente');
+          }
+        } catch (error) {
+          console.warn('Error eliminando foto anterior:', error);
+        }
+      }
+
       setIsModalOpen(false);
       fetchData();
     } catch (err: any) {

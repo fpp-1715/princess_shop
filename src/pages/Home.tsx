@@ -31,7 +31,7 @@ function HeroSection() {
             Tu piel merece<br /><span className="italic text-rose-500">lo mejor</span><br />del mundo
           </h1>
           <p className="reveal-hidden text-base sm:text-lg text-gray-700 leading-relaxed max-w-lg" style={{ transitionDelay: '200ms' }}>
-            Sin filtros, sin reglas, sin miedo. Celebramos la belleza real: la que se divierte, experimenta, se equivoca y aprende. Nuestra filosofía es simple: amamos lo que hacemos y queremos que tú también ames lo que usas. Porque maquillaje y skincare no son rutinas… son momentos para ti.
+            Creemos que la belleza no tiene reglas. Por eso seleccionamos los mejores productos de maquillaje y skincare para que brilles con tu propia esencia. Calidad, tendencia y amor por lo que hacemos… todo en un solo lugar.
           </p>
           <div className="reveal-hidden flex flex-wrap gap-4" style={{ transitionDelay: '400ms' }}>
             <Link to="/shop" className="btn-primary px-8 py-4 rounded-full text-sm font-bold inline-flex items-center gap-2.5 shadow-rose-md hover:scale-105 transition-transform">
@@ -254,7 +254,7 @@ function PhilosophySection() {
           Nuestra Filosofía
         </h2>
         <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto">
-          En PrincessShop creemos que la verdadera belleza comienza con el cuidado genuino de la piel. Formulamos cada ritual con <span className="text-rose-300 font-semibold">ingredientes botánicos de primera calidad</span>, combinando la ciencia moderna con lo mejor que la naturaleza tiene para ofrecer.
+          Sin filtros, sin reglas, sin miedo. Celebramos la belleza real: la que se divierte, experimenta, se equivoca y aprende. Nuestra filosofía es simple: amamos lo que hacemos y queremos que tú también ames lo que usas. Porque maquillaje y skincare no son rutinas… son momentos para ti.
         </p>
       </div>
     </section>

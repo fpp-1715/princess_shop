@@ -335,7 +335,7 @@ export default function AdminDashboard() {
                     )}
                     <td className="p-4 text-center">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${((activeTab === 'products' ? item.is_available : item.is_active) ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600')}`}>
-                        {(activeTab === 'products' ? item.is_available : item.is_active) ? 'Activo' : 'Oculto'}
+                        {(activeTab === 'products' ? item.is_available : item.is_active) ? 'Activo' : (activeTab === 'products' ? 'Agotado' : 'Oculto')}
                       </span>
                     </td>
                     <td className="p-4 text-right">
@@ -528,14 +528,14 @@ export default function AdminDashboard() {
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input 
                       type="checkbox" 
-                      checked={activeTab === 'products' ? formData.is_available : formData.is_active} 
+                      checked={activeTab === 'products' ? !formData.is_available : formData.is_active} 
                       onChange={e => {
-                        if (activeTab === 'products') setFormData({...formData, is_available: e.target.checked})
+                        if (activeTab === 'products') setFormData({...formData, is_available: !e.target.checked})
                         else setFormData({...formData, is_active: e.target.checked})
                       }} 
                       className="w-4 h-4 text-primary rounded" 
                     />
-                    <span className="text-sm font-medium">Visible en la tienda</span>
+                    <span className="text-sm font-medium">Agotado</span>
                   </label>
                 </div>
               </div>

@@ -141,7 +141,9 @@ export default function Shop() {
                     <h2 className="font-display text-base font-semibold text-foreground mb-1.5 leading-snug">{product.name}</h2>
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex flex-col">
-                        {product.discount_price ? (
+                        {product.is_available === false ? (
+                          <span className="font-display text-xl font-bold text-red-500">Agotado</span>
+                        ) : product.discount_price ? (
                           <>
                             <span className="text-xs text-gray-400 line-through">${product.price} CUP</span>
                             <span className="font-display text-xl font-bold text-primary">${product.discount_price} CUP</span>
@@ -155,31 +157,34 @@ export default function Shop() {
                       {product.is_customizable ? (
                         <>
                           <button
+                            disabled={!product.is_available}
                             onClick={(e) => {
                               e.stopPropagation();
                               handleAddToCart(product);
                             }}
-                            className={`flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                            className={`flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 ${!product.is_available ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
                           >
                             {addedItems[product.id] ? "Agregado" : "Agregar"}
                           </button>
                           <button
+                            disabled={!product.is_available}
                             onClick={(e) => {
                               e.stopPropagation();
                               setCustomizingProduct(product);
                             }}
-                            className="flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 bg-gray-800 text-white hover:bg-gray-900 shadow-sm"
+                            className={`flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 ${!product.is_available ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-gray-800 text-white hover:bg-gray-900 shadow-sm'}`}
                           >
                             Personalizar
                           </button>
                         </>
                       ) : (
                         <button
+                          disabled={!product.is_available}
                           onClick={(e) => {
                             e.stopPropagation();
                             handleAddToCart(product);
                           }}
-                          className={`w-full flex items-center justify-center text-center py-2 px-4 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                          className={`w-full flex items-center justify-center text-center py-2 px-4 rounded-xl text-xs font-bold transition-all duration-300 ${!product.is_available ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
                         >
                           {addedItems[product.id] ? "Agregado" : "Agregar"}
                         </button>

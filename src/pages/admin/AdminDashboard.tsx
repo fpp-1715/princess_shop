@@ -259,7 +259,7 @@ export default function AdminDashboard() {
                     <td className="p-4">
                       <div className="flex items-center gap-3">
                         {item.image_url ? (
-                          <img src={item.image_url} alt={item.name} className="w-10 h-10 rounded-lg object-cover bg-gray-100" />
+                          <img src={item.image_url} alt={item.name} className="w-10 h-10 rounded-lg object-contain bg-white border border-gray-100" />
                         ) : (
                           <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400 text-xs">Sin img</div>
                         )}
@@ -375,7 +375,7 @@ export default function AdminDashboard() {
                   <label className="block text-sm mb-1 font-medium">Imagen del {activeTab === 'products' ? 'Producto' : 'Combo'} (Desde Galería)</label>
                   <div className="flex items-center gap-4">
                     {formData.image_url && (
-                      <img src={formData.image_url} alt="Preview" className="w-[60px] h-[60px] rounded-xl object-cover border border-gray-200 bg-gray-50 flex-shrink-0" />
+                      <img src={formData.image_url} alt="Preview" className="w-[60px] h-[60px] rounded-xl object-contain bg-white border border-gray-200 flex-shrink-0" />
                     )}
                     <input 
                       type="file" 

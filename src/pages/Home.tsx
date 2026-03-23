@@ -37,7 +37,7 @@ function HeroSection() {
         </div>
         <div className="lg:col-span-6 relative h-[400px] sm:h-[480px] md:h-[620px] reveal-hidden flex justify-center lg:justify-end items-center" style={{ transitionDelay: '150ms' }}>
           <div className="w-[85%] sm:w-[70%] lg:w-[65%] xl:w-[58%] aspect-[4/5] rounded-3xl md:rounded-5xl overflow-hidden img-frame z-10 animate-float lg:absolute lg:right-0 lg:top-1/2 lg:-translate-y-1/2">
-            <AppImage src="https://img.rocket.new/generatedImages/rocket_gen_img_13094096f-1772154229875.png" alt="Crema de lujo" className="w-full h-full object-cover product-img" />
+            <AppImage src="https://img.rocket.new/generatedImages/rocket_gen_img_13094096f-1772154229875.png" alt="Crema de lujo" className="w-full h-full object-contain product-img" />
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ function BestSellersSection() {
           {bestsellers.map((product, idx) => (
             <article key={product.id} className="min-w-[260px] sm:min-w-[300px] w-full max-w-[300px] snap-center shrink-0 product-card bg-white rounded-4xl overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }}>
               <div className="relative aspect-[4/5] overflow-hidden bg-blush-light/30">
-                <AppImage src={product.image_url} alt={product.name} fill className="object-cover product-img" />
+                <AppImage src={product.image_url} alt={product.name} fill className="object-contain p-2 product-img" />
                 <div className="absolute top-3 left-3 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-full shadow-sm flex items-center gap-1">
                   ⭐ Top Ventas
                 </div>
@@ -154,7 +154,7 @@ function CombosSection() {
           {combos.map(combo => (
             <div key={combo.id} className="bg-white p-4 sm:p-5 rounded-3xl shadow-card transition-all hover:-translate-y-2 flex flex-col h-full border border-primary/5">
               <div className="relative mb-4 rounded-xl overflow-hidden bg-blush-light/30">
-                <AppImage src={combo.image_url} alt={combo.name} className="w-full h-56 object-cover" />
+                <AppImage src={combo.image_url} alt={combo.name} className="w-full h-56 object-contain p-2 bg-white" />
                 <div className="absolute top-3 left-3 bg-primary text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm uppercase tracking-wide">
                   Combo Especial
                 </div>

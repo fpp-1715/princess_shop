@@ -1,115 +1,84 @@
-import { useState } from 'react';
-import Icon from '../components/ui/AppIcon';
-import AppImage from '../components/ui/AppImage';
-import { supabase } from '../lib/supabase';
-
-type FormState = 'idle' | 'loading' | 'success' | 'error';
-interface FormData { name: string; email: string; subject: string; message: string; }
-const subjects = ['Asesoría de skincare personalizada', 'Consulta sobre un producto', 'Estado de mi pedido', 'Devoluciones y cambios', 'Colaboraciones', 'Otro'];
-
-function ContactForm() {
-  const [formState, setFormState] = useState<FormState>('idle');
-  const [formData, setFormData] = useState<FormData>({ name: '', email: '', subject: '', message: '' });
-  const [errors, setErrors] = useState<Partial<FormData>>({});
-
-  const validate = (): boolean => {
-    const newErrors: Partial<FormData> = {};
-    if (!formData.name.trim()) newErrors.name = 'Por favor ingresa tu nombre';
-    if (!formData.email.trim()) newErrors.email = 'Por favor ingresa tu email';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email inválido';
-    if (!formData.message.trim()) newErrors.message = 'Por favor escribe tu mensaje';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-    setFormState('loading');
-    
-    // Using simple approach to insert using Supabase
-    try {
-      await supabase.from('contact_messages').insert([{
-        name: formData.name, email: formData.email, subject: formData.subject, message: formData.message
-      }]);
-      setFormState('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch {
-      setFormState('error');
-    }
-  };
-
-  if (formState === 'success') {
-    return (
-      <div className="bg-white rounded-5xl p-10 shadow-card text-center">
-        <h2 className="font-display text-2xl font-semibold mb-3">¡Mensaje enviado!</h2>
-        <button onClick={() => setFormState('idle')} className="btn-primary px-8 py-3.5 rounded-2xl">Enviar otro mensaje</button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-white rounded-5xl p-8 md:p-10 shadow-card">
-      <h2 className="font-display text-2xl font-semibold mb-2">Escríbenos</h2>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="grid sm:grid-cols-2 gap-5">
-          <div>
-            <label className="block text-sm font-semibold mb-2">Nombre *</label>
-            <input type="text" name="name" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="form-input w-full px-4 py-3 rounded-xl" />
-          </div>
-          <div>
-            <label className="block text-sm font-semibold mb-2">Email *</label>
-            <input type="email" name="email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="form-input w-full px-4 py-3 rounded-xl" />
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-semibold mb-2">Asunto</label>
-          <select name="subject" value={formData.subject} onChange={(e) => setFormData({...formData, subject: e.target.value})} className="form-input w-full px-4 py-3 rounded-xl">
-            <option value="">Selecciona un tema...</option>
-            {subjects.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-semibold mb-2">Mensaje *</label>
-          <textarea name="message" value={formData.message} onChange={(e) => setFormData({...formData, message: e.target.value})} rows={4} className="form-input w-full px-4 py-3 rounded-xl"></textarea>
-        </div>
-        <button type="submit" disabled={formState === 'loading'} className="btn-primary w-full py-4 rounded-2xl">{formState === 'loading' ? 'Enviando...' : 'Enviar Mensaje'}</button>
-      </form>
-    </div>
-  );
-}
+﻿import Icon from '../components/ui/AppIcon';
 
 function ContactInfo() {
   return (
-    <div className="space-y-6">
-      <div className="relative rounded-5xl overflow-hidden h-52 shadow-rose-md">
-        <AppImage src="https://img.rocket.new/generatedImages/rocket_gen_img_1892f4fb0-1767450374661.png" alt="Info" fill className="object-cover" />
-      </div>
-      <div className="bg-white rounded-4xl p-6 shadow-card space-y-4">
-        <h3 className="font-display font-semibold mb-4">Contáctanos</h3>
-        <div className="flex items-center gap-4">
-          <Icon name="EnvelopeIcon" className="text-primary"/> <span>hola@princessshop.com</span>
+    <div className="bg-white rounded-5xl p-8 md:p-12 shadow-card space-y-8">
+      
+      <div className="flex items-start gap-5">
+        <div className="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center shrink-0">
+          <Icon name="ChatBubbleLeftEllipsisIcon" size={24} />
         </div>
-        <div className="flex items-center gap-4">
-          <Icon name="PhoneIcon" className="text-primary"/> <span>+1 (305) 555-8492</span>
+        <div>
+          <h3 className="font-display text-xl font-semibold mb-2 text-gray-900">WhatsApp</h3>
+          <p className="text-gray-500 mb-3 text-sm md:text-base">Escríbenos para consultas, pedidos o asesoría personalizada.</p>
+          <a href="https://wa.me/5356968120" target="_blank" rel="noreferrer" className="text-green-600 font-semibold hover:underline flex items-center gap-1">
+            +53 5 696-8120 <Icon name="ArrowRightIcon" size={14} />
+          </a>
         </div>
       </div>
+
+      <hr className="border-gray-100" />
+
+      <div className="flex items-start gap-5">
+        <div className="w-12 h-12 rounded-2xl bg-rose-50 text-primary flex items-center justify-center shrink-0">
+           <Icon name="CameraIcon" size={24} />
+        </div>
+        <div>
+          <h3 className="font-display text-xl font-semibold mb-2 text-gray-900">Instagram</h3>
+          <p className="text-gray-500 mb-3 text-sm md:text-base">Síguenos para ver nuestras últimas novedades, rutinas y tips.</p>
+          <a href="https://www.instagram.com/paradiseglow03?igsh=MWdwY2xwbGIzOXRodg==" target="_blank" rel="noreferrer" className="text-primary font-semibold hover:underline flex items-center gap-1">
+            @paradiseglow03 <Icon name="ArrowRightIcon" size={14} />
+          </a>
+        </div>
+      </div>
+
+      <hr className="border-gray-100" />
+
+      <div className="flex items-start gap-5">
+        <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+          <Icon name="MapPinIcon" size={24} />
+        </div>
+        <div>
+          <h3 className="font-display text-xl font-semibold mb-2 text-gray-900">Tienda Física</h3>
+          <p className="text-gray-500 mb-1 text-sm md:text-base">Visítanos y prueba nuestros productos en persona.</p>
+          <p className="text-gray-900 font-medium text-sm md:text-base">Villuendas #3 entre Martha Abreus y Padre Chao</p>
+        </div>
+      </div>
+
     </div>
   );
 }
 
 export default function Contact() {
   return (
-    <main className="bg-gradient-blush min-h-screen">
-      <section className="pt-28 md:pt-32 pb-10 md:pb-16 px-6 text-center">
-        <h1 className="font-display text-4xl md:text-6xl font-semibold mb-4">Hablemos de tu piel</h1>
+    <div className="min-h-screen">
+      {/* Page Header */}
+      <section
+        className="pt-32 pb-16 px-6 relative overflow-hidden"
+        style={{ background: 'linear-gradient(145deg, #FFF8FB 0%, #FCE4EC 50%, #FFF3E8 100%)' }}
+      >
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blush/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="max-w-7xl mx-auto relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full badge-rose text-xs font-semibold mb-4">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            Siempre disponibles para ti
+          </div>
+          <h1 className="font-display text-4xl md:text-6xl font-semibold text-foreground mb-4 leading-tight">
+            Encuéntranos{' '}
+            <span className="italic text-gradient-rose">aquí</span>
+          </h1>
+          <p className="text-lg text-foreground-muted max-w-xl mx-auto leading-relaxed">
+            Escríbenos por WhatsApp, síguenos en Instagram o visítanos en nuestra tienda.
+          </p>
+        </div>
       </section>
-      <section className="py-8 px-4 sm:px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:grid lg:grid-cols-2 gap-8 md:gap-12">
-          <ContactForm />
+
+      {/* Main Content */}
+      <section className="py-16 px-6 bg-gradient-blush min-h-[50vh]" aria-label="Información de contacto">
+        <div className="max-w-3xl mx-auto">
           <ContactInfo />
         </div>
       </section>
-    </main>
+    </div>
   );
 }

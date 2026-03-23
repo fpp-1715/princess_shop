@@ -120,7 +120,7 @@ export default function Shop() {
               {filtered.map((product, idx) => (
                 <article key={product.id} className="product-card bg-white rounded-5xl overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }}>
                   <div className="relative aspect-[4/5] overflow-hidden bg-blush-light/30">
-                    <AppImage src={product.image_url} alt={product.name} fill className="object-cover product-img" />
+                    <AppImage src={product.image_url} alt={product.name} fill className="object-contain p-2 product-img" />
                     {product.is_bestseller && (
                       <div className="absolute top-3 left-3 bg-yellow-400 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
                         ⭐ Top

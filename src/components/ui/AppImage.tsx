@@ -10,7 +10,7 @@ export default function AppImage({ src, alt, className = "", fill, sizes, priori
       alt={alt} 
       className={className} 
       onError={() => setError(true)} 
-      style={fill ? { width: "100%", height: "100%", objectFit: "cover", ...style } : style}
+      style={fill ? { width: "100%", height: "100%", ...style } : style}
       width={width}
       height={height}
       {...props} 

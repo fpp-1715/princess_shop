@@ -19,16 +19,16 @@ export default function CustomProductModal({ product, onClose, onAddToCart }: { 
       });
   }, []);
 
-  // Calculamos el precio total: precio base + suma de productos seleccionados + 500 CUP
+  // Calculamos el precio total: suma de productos seleccionados + 500 CUP
   const totalPrice = useMemo(() => {
-    let total = product.discount_price || product.price; // precio base del producto personalizado
+    let total = 0;
     selectedProductIds.forEach(id => {
       const p = allProducts.find(prod => prod.id === id);
       if (p) total += (p.discount_price || p.price);
     });
     total += 500; // adicional por personalización
     return total;
-  }, [selectedProductIds, allProducts, product]);
+  }, [selectedProductIds, allProducts]);
 
   const toggleProduct = (id: string) => {
     setSelectedProductIds(prev => 

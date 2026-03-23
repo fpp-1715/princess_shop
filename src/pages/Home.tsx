@@ -31,7 +31,7 @@ function HeroSection() {
             Tu piel merece<br /><span className="italic text-rose-500">lo mejor</span><br />del mundo
           </h1>
           <p className="reveal-hidden text-base sm:text-lg text-gray-700 leading-relaxed max-w-lg" style={{ transitionDelay: '200ms' }}>
-            Serums, cremas y rituales formulados con extractos botánicos puros de microfarmas sostenibles. Resultados visibles en 7 días.
+            Creemos que la belleza no tiene reglas. Por eso seleccionamos los mejores productos de maquillaje y skincare para que brilles con tu propia esencia. Calidad, tendencia y amor por lo que hacemos… todo en un solo lugar.
           </p>
           <div className="reveal-hidden flex flex-wrap gap-4" style={{ transitionDelay: '400ms' }}>
             <Link to="/shop" className="btn-primary px-8 py-4 rounded-full text-sm font-bold inline-flex items-center gap-2.5 shadow-rose-md hover:scale-105 transition-transform">

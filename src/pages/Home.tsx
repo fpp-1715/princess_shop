@@ -25,7 +25,7 @@ function HeroSection() {
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10 w-full">
         <div className="space-y-6 md:space-y-8 text-left flex flex-col items-start pt-10 md:pt-0">
           <div className="reveal-hidden inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 border border-rose-200 text-primary text-xs font-semibold tracking-wide shadow-sm">
-            <Icon name="SparklesIcon" size={12} variant="solid" /> Skincare de Lujo Botánico
+            <Icon name="SparklesIcon" size={12} variant="solid" /> Skincare de lujo en Santa Clara
           </div>
           <h1 className="reveal-hidden font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold leading-[1.05] tracking-tight text-gray-900" style={{ transitionDelay: '100ms' }}>
             Tu piel merece<br /><span className="italic text-rose-500">lo mejor</span><br />del mundo

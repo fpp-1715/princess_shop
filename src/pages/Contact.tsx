@@ -27,7 +27,7 @@ function ContactInfo() {
           <h3 className="font-display text-xl font-semibold mb-2 text-gray-900">Instagram</h3>
           <p className="text-gray-500 mb-3 text-sm md:text-base">Síguenos para ver nuestras últimas novedades, rutinas y tips.</p>
           <a href="https://www.instagram.com/princess.shop.co?igsh=ajJobmo4OWprN2Ro&utm_source=qr" target="_blank" rel="noreferrer" className="text-primary font-semibold hover:underline flex items-center gap-1">
-            @paradiseglow03 <Icon name="ArrowRightIcon" size={14} />
+            @Princess-Shop <Icon name="ArrowRightIcon" size={14} />
           </a>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import AppImage from '../components/ui/AppImage';
 import Icon from '../components/ui/AppIcon';
 import CustomProductModal from '../components/CustomProductModal';
+import ProductDetailModal from '../components/ProductDetailModal';
 import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/cartStore';
 
@@ -34,7 +35,9 @@ export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
-  const [customizingProduct, setCustomizingProduct] = useState<any | null>(null);  const addItem = useCartStore((s) => s.addItem);  useEffect(() => {
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [customizingProduct, setCustomizingProduct] = useState<any | null>(null);
+  const addItem = useCartStore((s) => s.addItem);  useEffect(() => {
     setSelectedCategory(searchParams.get('category') || 'all');
   }, [searchParams]);
 
@@ -66,11 +69,6 @@ export default function Shop() {
   });
 
   const handleAddToCart = useCallback((product: any) => {
-    if (product.is_customizable) {
-      setCustomizingProduct(product);
-      return;
-    }
-    
     addItem({
       id: product.id,
       name: product.name,
@@ -116,13 +114,13 @@ export default function Shop() {
       <section className="py-12 px-6">
         <div className="max-w-7xl mx-auto">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <ProductSkeleton key={i} />)}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 gap-6">
               {filtered.map((product, idx) => (
-                <article key={product.id} className="product-card bg-white rounded-5xl overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }}>
+                <article key={product.id} className="product-card bg-white rounded-5xl overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }} onClick={() => setSelectedProduct(product)}>
                   <div className="relative aspect-[4/5] overflow-hidden bg-blush-light/30">
                     <AppImage src={product.image_url} alt={product.name} fill className="object-contain p-2 product-img" />
                     {product.is_bestseller && (
@@ -142,7 +140,7 @@ export default function Shop() {
                     </div>
                     <h2 className="font-display text-base font-semibold text-foreground mb-1.5 leading-snug">{product.name}</h2>
                     {product.description && (
-                      <p className="text-xs text-gray-500 line-clamp-2 mt-1 mb-2" title={product.description}>
+                      <p className="text-xs text-gray-500 mt-1 mb-2">
                         {product.description}
                       </p>
                     )}
@@ -157,14 +155,40 @@ export default function Shop() {
                           <span className="font-display text-xl font-bold text-foreground">${product.price} CUP</span>
                         )}
                       </div>
-                      <button onClick={() => handleAddToCart(product)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 inline-flex items-center gap-1.5 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}>
-                        {addedItems[product.id] 
-                          ? "Agregado" 
-                          : product.is_customizable 
-                            ? "Personalizar" 
-                            : "Agregar"
-                        }
-                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {product.is_customizable ? (
+                        <>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToCart(product);
+                            }}
+                            className={`flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                          >
+                            {addedItems[product.id] ? "Agregado" : "Agregar"}
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setCustomizingProduct(product);
+                            }}
+                            className="flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 bg-gray-800 text-white hover:bg-gray-900 shadow-sm"
+                          >
+                            Personalizar
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart(product);
+                          }}
+                          className={`w-full flex items-center justify-center text-center py-2 px-4 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                        >
+                          {addedItems[product.id] ? "Agregado" : "Agregar"}
+                        </button>
+                      )}
                     </div>
                   </div>
                 </article>
@@ -188,6 +212,19 @@ export default function Shop() {
           }}
         />
       )}
-    </main>
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={(product) => {
+            handleAddToCart(product);
+            setSelectedProduct(null);
+          }}
+          onCustomize={(product) => {
+            setCustomizingProduct(product);
+            setSelectedProduct(null);
+          }}
+        />
+      )}    </main>
   );
 }

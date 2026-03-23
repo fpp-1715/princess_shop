@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AppImage from '../components/ui/AppImage';
 import Icon from '../components/ui/AppIcon';
 import CustomProductModal from '../components/CustomProductModal';
+import ProductDetailModal from '../components/ProductDetailModal';
 import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/cartStore';
 
@@ -48,8 +49,9 @@ function HeroSection() {
 function FeaturedProductsSection() {
   const [activeTab, setActiveTab] = useState<'popular' | 'new' | 'sale'>('popular');
   const [products, setProducts] = useState<any[]>([]);
-  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [customizingProduct, setCustomizingProduct] = useState<any | null>(null);
+  const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
   const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
@@ -66,10 +68,6 @@ function FeaturedProductsSection() {
   }, [activeTab]);
 
   const handleAddToCart = (product: any) => {
-    if (product.is_customizable) {
-      setCustomizingProduct(product);
-      return;
-    }
     addItem({
       id: product.id,
       name: product.name,
@@ -114,27 +112,25 @@ function FeaturedProductsSection() {
             No hay productos disponibles en esta sección por ahora.
           </div>
         ) : (
-          <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory hide-scrollbar" style={{ scrollbarWidth: 'none' }}>
+          <div className="grid grid-cols-2 gap-6">
             {products.map((product, idx) => (
-              <article key={product.id} className="min-w-[260px] sm:min-w-[300px] w-full max-w-[300px] snap-center shrink-0 product-card bg-white rounded-[2rem] overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }}>
-                <Link to={`/shop?product=${product.id}`} className="block relative aspect-[4/5] overflow-hidden bg-blush-light/30">
-                  <AppImage src={product.image_url} alt={product.name} fill className="object-contain p-4 product-img transition-transform duration-500 group-hover:scale-105" />
+              <article key={product.id} className="product-card bg-white rounded-5xl overflow-hidden shadow-card border border-primary/5 group" style={{ animationDelay: `${idx * 60}ms` }} onClick={() => setSelectedProduct(product)}>
+                <div className="relative aspect-[4/5] overflow-hidden bg-blush-light/30">
+                  <AppImage src={product.image_url} alt={product.name} fill className="object-contain p-2 product-img" />
                   {product.is_bestseller && activeTab !== 'popular' && (
-                    <div className="absolute top-4 left-4 bg-yellow-400 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full shadow-sm">⭐ Top Ventas</div>
+                    <div className="absolute top-3 left-3 bg-yellow-400 text-white text-[10px] uppercase font-bold px-2 py-1 rounded-full shadow-sm">⭐ Top</div>
                   )}
                   {product.discount_price && (
-                    <div className="absolute top-4 right-4 bg-red-500 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full shadow-sm">Oferta</div>
+                    <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] uppercase font-bold px-2 py-1 rounded-full shadow-sm">Oferta</div>
                   )}
                   {activeTab === 'new' && (
-                    <div className="absolute top-4 left-4 bg-green-500 text-white text-[10px] uppercase font-bold px-2.5 py-1 rounded-full shadow-sm">Nuevo</div>
+                    <div className="absolute top-3 left-3 bg-green-500 text-white text-[10px] uppercase font-bold px-2 py-1 rounded-full shadow-sm">Nuevo</div>
                   )}
-                </Link>
+                </div>
                 <div className="p-5">
-                  <Link to={`/shop?product=${product.id}`}>
-                    <h2 className="font-display text-base font-semibold text-gray-900 mb-1.5 leading-snug line-clamp-1 hover:text-primary transition-colors">{product.name}</h2>
-                  </Link>
+                  <h2 className="font-display text-base font-semibold text-gray-900 mb-1.5 leading-snug line-clamp-1 hover:text-primary transition-colors">{product.name}</h2>
                   {product.description && (
-                    <p className="text-xs text-gray-500 line-clamp-2 mt-1 mb-2" title={product.description}>
+                    <p className="text-xs text-gray-500 mt-1 mb-2">
                       {product.description}
                     </p>
                   )}
@@ -149,14 +145,40 @@ function FeaturedProductsSection() {
                         <span className="font-display text-xl font-bold text-gray-900">${product.price} CUP</span>
                       )}
                     </div>
-                    <button onClick={() => handleAddToCart(product)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 inline-flex items-center gap-1.5 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}>
-                      {addedItems[product.id] 
-                        ? "Agregado" 
-                        : product.is_customizable 
-                          ? "Personalizar" 
-                          : "Agregar"
-                      }
-                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {product.is_customizable ? (
+                      <>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleAddToCart(product);
+                          }}
+                          className={`flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                        >
+                          {addedItems[product.id] ? "Agregado" : "Agregar"}
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCustomizingProduct(product);
+                          }}
+                          className="flex-1 min-w-[100px] flex items-center justify-center text-center py-2 px-3 rounded-xl text-xs font-bold transition-all duration-300 bg-gray-800 text-white hover:bg-gray-900 shadow-sm"
+                        >
+                          Personalizar
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
+                        className={`w-full flex items-center justify-center text-center py-2 px-4 rounded-xl text-xs font-bold transition-all duration-300 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}
+                      >
+                        {addedItems[product.id] ? "Agregado" : "Agregar"}
+                      </button>
+                    )}
                   </div>
                 </div>
               </article>
@@ -172,10 +194,26 @@ function FeaturedProductsSection() {
           onAddToCart={(item) => {
             addItem(item);
             setCustomizingProduct(null);
-            setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: true }));
-            setTimeout(() => {
-              setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: false }));
-            }, 2000);
+          }}
+        />
+      )}
+      {selectedProduct && (
+        <ProductDetailModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={(item) => {
+            addItem({
+              id: item.id,
+              name: item.name,
+              price: item.discount_price || item.price,
+              image_url: item.image_url,
+              quantity: 1
+            });
+            setSelectedProduct(null);
+          }}
+          onCustomize={(product) => {
+            setSelectedProduct(null);
+            setCustomizingProduct(product);
           }}
         />
       )}

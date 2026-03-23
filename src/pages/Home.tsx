@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AppImage from '../components/ui/AppImage';
 import Icon from '../components/ui/AppIcon';
+import CustomProductModal from '../components/CustomProductModal';
 import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/cartStore';
 
@@ -48,6 +49,7 @@ function FeaturedProductsSection() {
   const [activeTab, setActiveTab] = useState<'popular' | 'new' | 'sale'>('popular');
   const [products, setProducts] = useState<any[]>([]);
   const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
+  const [customizingProduct, setCustomizingProduct] = useState<any | null>(null);
   const addItem = useCartStore((s) => s.addItem);
 
   useEffect(() => {
@@ -64,6 +66,10 @@ function FeaturedProductsSection() {
   }, [activeTab]);
 
   const handleAddToCart = (product: any) => {
+    if (product.is_customizable) {
+      setCustomizingProduct(product);
+      return;
+    }
     addItem({
       id: product.id,
       name: product.name,
@@ -76,7 +82,8 @@ function FeaturedProductsSection() {
   };
 
   return (
-    <section className="py-20 px-6 bg-white/40">
+    <>
+      <section className="py-20 px-6 bg-white/40">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between mb-10 gap-6">
           <h2 className="font-display text-3xl sm:text-4xl font-semibold text-foreground text-center md:text-left">
@@ -126,6 +133,11 @@ function FeaturedProductsSection() {
                   <Link to={`/shop?product=${product.id}`}>
                     <h2 className="font-display text-base font-semibold text-gray-900 mb-1.5 leading-snug line-clamp-1 hover:text-primary transition-colors">{product.name}</h2>
                   </Link>
+                  {product.description && (
+                    <p className="text-xs text-gray-500 line-clamp-2 mt-1 mb-2" title={product.description}>
+                      {product.description}
+                    </p>
+                  )}
                   <div className="flex items-center justify-between mt-5">
                     <div className="flex flex-col">
                       {product.discount_price ? (
@@ -138,7 +150,12 @@ function FeaturedProductsSection() {
                       )}
                     </div>
                     <button onClick={() => handleAddToCart(product)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 inline-flex items-center gap-1.5 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}>
-                      {addedItems[product.id] ? "Agregado" : "Agregar"}
+                      {addedItems[product.id] 
+                        ? "Agregado" 
+                        : product.is_customizable 
+                          ? "Personalizar" 
+                          : "Agregar"
+                      }
                     </button>
                   </div>
                 </div>
@@ -148,6 +165,21 @@ function FeaturedProductsSection() {
         )}
       </div>
     </section>
+      {customizingProduct && (
+        <CustomProductModal
+          product={customizingProduct}
+          onClose={() => setCustomizingProduct(null)}
+          onAddToCart={(item) => {
+            addItem(item);
+            setCustomizingProduct(null);
+            setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: true }));
+            setTimeout(() => {
+              setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: false }));
+            }, 2000);
+          }}
+        />
+      )}
+    </>
   );
 }
 

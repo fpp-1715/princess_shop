@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import AppImage from '../components/ui/AppImage';
 import Icon from '../components/ui/AppIcon';
+import CustomProductModal from '../components/CustomProductModal';
 import { supabase } from '../lib/supabase';
 import { useCartStore } from '../store/cartStore';
 
@@ -33,9 +34,7 @@ export default function Shop() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [addedItems, setAddedItems] = useState<Record<string, boolean>>({});
-  const addItem = useCartStore((s) => s.addItem);
-
-  useEffect(() => {
+  const [customizingProduct, setCustomizingProduct] = useState<any | null>(null);  const addItem = useCartStore((s) => s.addItem);  useEffect(() => {
     setSelectedCategory(searchParams.get('category') || 'all');
   }, [searchParams]);
 
@@ -67,6 +66,11 @@ export default function Shop() {
   });
 
   const handleAddToCart = useCallback((product: any) => {
+    if (product.is_customizable) {
+      setCustomizingProduct(product);
+      return;
+    }
+    
     addItem({
       id: product.id,
       name: product.name,
@@ -137,6 +141,11 @@ export default function Shop() {
                       <span className="px-2.5 py-0.5 rounded-full badge-rose text-[10px] font-semibold">{product.category_name}</span>
                     </div>
                     <h2 className="font-display text-base font-semibold text-foreground mb-1.5 leading-snug">{product.name}</h2>
+                    {product.description && (
+                      <p className="text-xs text-gray-500 line-clamp-2 mt-1 mb-2" title={product.description}>
+                        {product.description}
+                      </p>
+                    )}
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex flex-col">
                         {product.discount_price ? (
@@ -149,7 +158,12 @@ export default function Shop() {
                         )}
                       </div>
                       <button onClick={() => handleAddToCart(product)} className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 inline-flex items-center gap-1.5 ${addedItems[product.id] ? 'bg-green-500 text-white shadow-sm' : 'btn-primary shadow-rose-sm'}`}>
-                        {addedItems[product.id] ? "Agregado" : "Agregar"}
+                        {addedItems[product.id] 
+                          ? "Agregado" 
+                          : product.is_customizable 
+                            ? "Personalizar" 
+                            : "Agregar"
+                        }
                       </button>
                     </div>
                   </div>
@@ -159,6 +173,21 @@ export default function Shop() {
           )}
         </div>
       </section>
+
+      {customizingProduct && (
+        <CustomProductModal
+          product={customizingProduct}
+          onClose={() => setCustomizingProduct(null)}
+          onAddToCart={(customItem) => {
+            addItem(customItem);
+            setCustomizingProduct(null);
+            setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: true }));
+            setTimeout(() => {
+              setAddedItems((prev) => ({ ...prev, [customizingProduct.id]: false }));
+            }, 2000);
+          }}
+        />
+      )}
     </main>
   );
 }

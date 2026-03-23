@@ -30,7 +30,8 @@ export default function AdminDashboard() {
   
   const initialProductForm = {
     name: '', description: '', price: 0, image_url: '', category_id: '', 
-    is_available: true, is_bestseller: false, discount_price: '' as number | string
+    is_available: true, is_bestseller: false, discount_price: '' as number | string,
+    is_customizable: false, included_products: [] as string[]
   };
   const initialComboForm = {
     name: '', description: '', price: 0, image_url: '', is_active: true
@@ -81,7 +82,9 @@ export default function AdminDashboard() {
           category_id: item.category_id || '',
           is_available: item.is_available !== false,
           is_bestseller: item.is_bestseller || false,
-          discount_price: item.discount_price || ''
+          discount_price: item.discount_price || '',
+          is_customizable: item.is_customizable || false,
+          included_products: item.included_products || []
         });
       } else {
         setFormData({
@@ -123,9 +126,8 @@ export default function AdminDashboard() {
       const croppedFile = await getCroppedImg(imgRef.current, completedCrop);
       
       const compressedFile = await imageCompression(croppedFile, {
-        maxSizeMB: 1,
-        maxWidthOrHeight: 1920,
-        useWebWorker: true,
+          maxSizeMB: 0.5,
+          maxWidthOrHeight: 1080,
         fileType: 'image/webp'
       });
 
@@ -164,6 +166,8 @@ export default function AdminDashboard() {
       delete payload.is_available;
       delete payload.is_bestseller;
       delete payload.discount_price;
+      delete payload.is_customizable;
+      delete payload.included_products;
       delete payload.categories; // <- Eliminar esto si viene del fetch
     } else if (activeTab === 'products') {
       // Y si guardamos un producto, borramos la propiedad de combos
@@ -381,9 +385,9 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <label className="block text-sm mb-1 font-medium">Precio Actual (CUP)</label>
-                  <input required type="number" step="1" value={formData.price === 0 ? '' : formData.price} onChange={e => setFormData({...formData, price: e.target.value ? parseFloat(e.target.value) : 0})} className="form-input w-full px-3 py-2 rounded-xl text-sm border-gray-200" />
-                </div>
-
+                    <input required type="number" step="1" value={formData.price === 0 ? '' : formData.price} onChange={e => setFormData({...formData, price: e.target.value ? parseFloat(e.target.value) : 0})} className={`form-input w-full px-3 py-2 rounded-xl text-sm border-gray-200 ${formData.is_customizable ? 'bg-gray-100' : ''}`} readOnly={formData.is_customizable} title={formData.is_customizable ? "El precio se calcula automáticamente al seleccionar los productos" : ""} />
+                    {formData.is_customizable && <p className="text-[10px] text-gray-500 mt-1">El precio se calcula automáticamente sumando los productos seleccionados.</p>}
+                  </div>
                 {activeTab === 'products' && (
                   <>
                     <div>
@@ -410,6 +414,61 @@ export default function AdminDashboard() {
                           <span className="text-sm font-semibold text-rose-900">Marcar como "Más Vendido" ⭐</span>
                         </label>
                         <p className="text-[10px] text-rose-600 -mt-1 ml-7">Estos productos aparecerán en un carrusel especial en la página principal.</p>
+
+                        <label className="flex items-center gap-2 cursor-pointer mt-2 border-t border-rose-200 pt-3">
+                          <input type="checkbox" checked={formData.is_customizable} onChange={e => {
+                            const is_customizable = e.target.checked;
+                            let newPrice = formData.price;
+                            let newCategoryId = formData.category_id;
+                            if (is_customizable) {
+                              const currentProducts = formData.included_products || [];
+                              newPrice = currentProducts.reduce((acc: number, currId: string) => {
+                                const prod = products.find(x => x.id === currId);
+                                return acc + (prod ? (prod.discount_price || prod.price) : 0);
+                              }, 0);
+                              
+                              // Auto select category "Pedidos Personalizados"
+                              const customCat = categories.find(c => c.name.toLowerCase().includes('personalizado'));
+                              if (customCat) {
+                                newCategoryId = customCat.id;
+                              }
+                            }
+                            setFormData({...formData, is_customizable, price: newPrice, category_id: newCategoryId});
+                          }} className="w-5 h-5 text-primary rounded border-rose-300" />
+                          <span className="text-sm font-semibold text-rose-900">¿Es un Arreglo / Personalizable? 🎀</span>
+                        </label>
+                        <p className="text-[10px] text-rose-600 -mt-1 ml-7">Al habilitarlo, el precio será automáticamente la suma de los productos incluidos. El cliente podrá sumar o quitar opciones.</p>
+                        
+                        {formData.is_customizable && (
+                          <div className="mt-3">
+                            <label className="block text-xs mb-1 font-semibold text-rose-800">Productos seleccionados por defecto</label>
+                            <div className="max-h-40 overflow-y-auto bg-white border border-rose-200 rounded-xl p-2 space-y-1">
+                              {products.filter(p => p.id !== editingId && !p.is_customizable).map(p => (
+                                <label key={p.id} className="flex items-center gap-2 text-xs text-gray-700 cursor-pointer p-1 hover:bg-rose-50 rounded">
+                                  <input 
+                                    type="checkbox" 
+                                    checked={formData.included_products?.includes(p.id)}
+                                    onChange={e => {
+                                      const prev = formData.included_products || [];
+                                      let newProducts;
+                                      if (e.target.checked) newProducts = [...prev, p.id];
+                                      else newProducts = prev.filter((id: string) => id !== p.id);
+                                      
+                                      const sum = newProducts.reduce((acc: number, currId: string) => {
+                                        const prod = products.find(x => x.id === currId);
+                                        return acc + (prod ? (prod.discount_price || prod.price) : 0);
+                                      }, 0);
+                                      
+                                      setFormData({...formData, included_products: newProducts, price: sum});
+                                    }}
+                                    className="text-primary rounded focus:ring-rose-500"
+                                  />
+                                  <span>{p.name} - ${p.price}</span>
+                                </label>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </>

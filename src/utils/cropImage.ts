@@ -5,13 +5,17 @@ export async function getCroppedImg(
   const canvas = document.createElement('canvas');
   const scaleX = image.naturalWidth / image.width;
   const scaleY = image.naturalHeight / image.height;
-  canvas.width = crop.width;
-  canvas.height = crop.height;
+  
+  // Establecer el tamaño del canvas basado en la resolución original (natural)
+  canvas.width = Math.floor(crop.width * scaleX);
+  canvas.height = Math.floor(crop.height * scaleY);
   const ctx = canvas.getContext('2d');
 
   if (!ctx) {
     throw new Error('No 2d context');
   }
+
+  ctx.imageSmoothingQuality = 'high';
 
   // Draw the cropped image onto the canvas
   ctx.drawImage(
@@ -22,8 +26,8 @@ export async function getCroppedImg(
     crop.height * scaleY,
     0,
     0,
-    crop.width,
-    crop.height
+    canvas.width,
+    canvas.height
   );
 
   // Return as a Promise resolving to a File
@@ -33,7 +37,7 @@ export async function getCroppedImg(
         reject(new Error('Canvas is empty'));
         return;
       }
-      resolve(new File([blob], 'cropped-image.jpg', { type: 'image/jpeg' }));
-    }, 'image/jpeg', 0.95);
+      resolve(new File([blob], 'cropped-image.webp', { type: 'image/webp' }));
+    }, 'image/webp', 1);
   });
 }

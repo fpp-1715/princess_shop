@@ -6,6 +6,7 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import FloatingCartButton from './components/FloatingCartButton';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <FloatingCartButton />
       </div>
     </Router>
   );

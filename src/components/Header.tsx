@@ -14,9 +14,11 @@ const navLinks = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const totalItems = useCartStore((s) => s.getTotalItems());
+  const isCartOpen = useCartStore((s) => s.isCartOpen);
+  const openCart = useCartStore((s) => s.openCart);
+  const closeCart = useCartStore((s) => s.closeCart);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -45,7 +47,7 @@ export default function Header() {
 
           <div className="hidden md:flex items-center gap-3">
             <button 
-              onClick={() => setIsCartOpen(true)}
+              onClick={openCart}
               className="relative w-10 h-10 flex items-center justify-center rounded-xl text-foreground-muted hover:text-primary hover:bg-blush-light/60 transition-all duration-300"
             >
               <Icon name="ShoppingBagIcon" size={20} variant="outline" />
@@ -67,7 +69,7 @@ export default function Header() {
           
           <button 
             className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl text-foreground-muted hover:text-primary hover:bg-blush-light/60 transition-all ml-1" 
-            onClick={() => setIsCartOpen(true)}
+            onClick={openCart}
           >
             <Icon name="ShoppingBagIcon" size={22} variant="outline" />
             {totalItems > 0 && (
@@ -91,7 +93,7 @@ export default function Header() {
         </nav>
       </div>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={isCartOpen} onClose={closeCart} />
     </header>
   );
 }
